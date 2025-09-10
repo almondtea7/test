@@ -1,0 +1,61 @@
+import turtle
+import time
+
+# Setup screen
+screen = turtle.Screen()
+screen.bgcolor("white")
+screen.title("Growing Tree")
+
+# Create turtle
+tree = turtle.Turtle()
+tree.speed(0)
+tree.left(90)  # Face upwards
+tree.color("green")
+
+# Hide the turtle shape
+tree.hideturtle()
+
+# Growing tree function (recursive)
+def grow(branch_length, t):
+    if branch_length < 5:
+        return
+
+    # Draw the branch
+    t.forward(branch_length)
+    time.sleep(0.05)  # Delay to simulate growth
+
+    # Save the current state
+    current_position = t.position()
+    current_heading = t.heading()
+
+    # Right branch
+    t.right(20)
+    grow(branch_length - 10, t)
+
+    # Restore position and heading
+    t.penup()
+    t.setposition(current_position)
+    t.setheading(current_heading)
+    t.pendown()
+
+    # Left branch
+    t.left(20)
+    grow(branch_length - 10, t)
+
+    # Backtrack
+    t.penup()
+    t.setposition(current_position)
+    t.setheading(current_heading)
+    t.pendown()
+
+    t.backward(branch_length)
+
+# Start growing tree
+tree.penup()
+tree.goto(0, -250)  # Start from bottom center
+tree.pendown()
+
+grow(60, tree)
+
+# Keep the window open
+screen.mainloop()
